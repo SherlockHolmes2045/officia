@@ -1022,10 +1022,6 @@
 </footer>
 <!-- Footer End -->
 
-
-
-
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{asset('assets/js/jquery.min.js')}}"></script>

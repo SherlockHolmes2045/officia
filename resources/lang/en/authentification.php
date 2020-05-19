@@ -18,7 +18,7 @@ return [
     'account_title' => 'Choose your account type.',
     'register' => 'Register',
     'login' => 'Login',
-    'oauth' => 'Or connect with',
+    'oauth_login' => 'Or connect with',
     'oauth_register' => 'Or register with',
     'forget' => 'Forget Password?',
     'remember' => 'Remember Me',

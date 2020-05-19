@@ -4,10 +4,10 @@
     <form action="{{route('login')}}" method="POST">
         @csrf
         <div class="form-group">
-            <input type="email" placeholder="Email Address" class="form-control" name="email">
+            <input type="email" placeholder="Email Address" class="form-control" name="email" required>
         </div>
         <div class="form-group">
-            <input type="password" placeholder="Password" class="form-control" name="password">
+            <input type="password" placeholder="Password" class="form-control" name="password" required>
         </div>
         <div class="more-option">
             <div class="mt-0 terms">

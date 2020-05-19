@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\EmployerDetails;
+use App\Notifications\AccountCreated;
 use App\UserDetails;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,8 +28,17 @@ class UserDetailsCreation
      */
     public function handle(Registered $event)
     {
-        $user_details = new UserDetails();
-        $user_details->user_id = $event->user->id;
-        $user_details->save();
+
+        if($event->user->account_type == 'candidate'){
+            $user_details = new UserDetails();
+            $user_details->user_id = $event->user->id;
+            $user_details->save();
+        } else{
+            $user_details = new EmployerDetails();
+            $user_details->user_id = $event->user->id;
+            $user_details->save();
+        }
+        $event->user->notify(new AccountCreated($event->user));
+
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\AccountCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\Validator, Illuminate\Support\Facades\Redirect, Illuminate\Support\Facades\Response, phpDocumentor\Reflection\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use App\User;
@@ -45,14 +47,11 @@ class SocialController extends Controller
 
             auth()->login($existingUser, true);
         } else {
-            /*$user = $this->createUser($getInfo, $provider);
-            auth()->login($user);*/
-            /*return redirect()->route('auth.finalise',[
-                'provider_id' => $getInfo->id,
+            $info = base64_encode(serialize($getInfo));
+            Session::put('oauth',$info);
+            return redirect()->route('auth.showform', [
                 'provider' => $provider
-            ]);*/
-            $info = serialize($getInfo);
-            return view('auth.finalise',compact('info','provider'));
+            ]);
         }
 
         return redirect()->to('/home');
@@ -83,13 +82,18 @@ class SocialController extends Controller
         $request->validate([
             'account_type' => ['required',Rule::in(['candidate', 'employer'])],
             'provider' => ['required','string'],
-            'getInfo' => ['required','string']
         ]);
 
-        $user = $this->createUser(unserialize($request->get('getInfo')),$request->get('provider'),$request->get('account_type'));
+        $user = $this->createUser(unserialize(base64_decode(Session::get('oauth'))),$request->get('provider'),$request->get('account_type'));
         event(new Registered($user));
+        Session::forget('oauth');
         auth()->login($user);
         return redirect()->to('/home');
+    }
+
+    public function showform($provider){
+
+        return view('auth.finalise',compact('provider'));
     }
 
 }

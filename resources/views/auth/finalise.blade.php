@@ -3,7 +3,6 @@
 @section('content')
     <form action="{{route('auth.finalise')}}" method="POST">
         @csrf
-        <input type="hidden" value="{{$info}}" name="getInfo">
         <input type="hidden" value="{{$provider}}" name="provider">
         <h3 style="font-weight: bold"> @lang('authentification.account_title')</h3><br>
         <div class="account-type">

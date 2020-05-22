@@ -25,6 +25,7 @@ class CreateJobsTable extends Migration
             $table->string('type')->nullable();
             $table->string('gender')->default('any');
             $table->string('experience');
+            $table->text("categories")->nullable();
             $table->text('skills')->nullable();
             $table->boolean('report')->default(false);
             $table->string('candidate_id')->nullable();

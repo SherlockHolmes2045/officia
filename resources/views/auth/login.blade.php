@@ -1,6 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
+
     <form action="{{route('login')}}" method="POST">
         @csrf
         <div class="form-group">

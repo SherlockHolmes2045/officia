@@ -20,6 +20,6 @@
 <script src="{{asset('js/quill.min.js')}}"></script>
 <script src="{{asset('js/custom.js')}}"></script>
 <script src="{{asset('js/simplemde.min.js')}}"></script>
-<script src="{{asset('assets/css/tags/bootstrap-tagsinput.min.js')}}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
-<script src="{{asset('js/map.js')}}"></script>
+@include('notify::messages')
+@notifyJs
+

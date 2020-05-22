@@ -6,7 +6,7 @@
                 <div class="col-md-6">
                     <div class="footer-logo">
                         <a href="#">
-                            <img src="images/footer-logo.png" class="img-fluid" alt="">
+                            <img src="{{asset('images/footer-logo.png')}}" class="img-fluid" alt="">
                         </a>
                     </div>
                 </div>

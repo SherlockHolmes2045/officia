@@ -42,10 +42,7 @@
     <![endif]-->
 </head>
 <body>
-<form action="{{route("logout")}}" method="POST">
-    @csrf
-    <button type="submit">logout</button>
-</form>
+
     <header class="header-2 access-page-nav">
         <div class="container">
             <div class="row">
@@ -109,7 +106,5 @@
 
     <script src="{{asset('js/custom.js')}}"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
-    <script src="{{asset('js/map.js')}}"></script>
 </body>
 </html>

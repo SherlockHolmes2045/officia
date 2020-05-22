@@ -1,70 +1,46 @@
+<script src="{{asset('js/jquery-ui.min.js')}}"></script>
+<script src="{{asset("js/autocomplete-0.3.0.min.js")}}"></script>
+<script src="{{asset("js/jquery.tagsinput-revisited.min.js")}}"></script>
 <script>
-
-    //$('#smartwizard').smartWizard();
-
-    var simplemde = new SimpleMDE({ element: $("#mytextarea")[0] });
-
-    /*$("#smartwizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
-        let testimony = true;
-        switch(stepNumber){
-            case 0 :
-            testimony = !(!$("#title")[0].checkValidity() || !$('#type')[0].checkValidity() || !$('#experience')[0].checkValidity() || !$('#experience')[0].checkValidity());
-            break;
-            case 1:
-                $("#mytextarea").val(simplemde.options.previewRender(simplemde.value()));
-                testimony = $("#mytextarea")[0].checkValidity();
-                if(!$('#mytextarea')[0].checkValidity()){
-                    $('#description').show();
-                }else{
-                    $('#description').hide();
-                }
-                break;
-            case 2:
-                if($('#mycategories').val() == ""){
-                    testimony = false;
-                    $('#categories-error').show();
-                }else{
-                    $('#categories-error').hide();
-                }
-                break;
-            case 3:
-                console.log($('#myskills').val());
-               if($('#myskills').val()==""){
-                   testimony = false;
-                   $("#skills-error").show();
-               }else{
-                   $("#skills-error").hide();
-               }
-                break;
-            case 4:
-                break;
-            default:
-                break;
-        }
-        if(!testimony){
-            testimony = true;
-            $("#submit-button").click();
-            return  false;
-        }else{
-            testimony = true;
-            return true;
-        }
-    });*/
-
-    $("#addtag").click(function (e) {
-        e.preventDefault();
-        if($("#tags").val() !==""){
-            var item = $("#tags").val();
-            $('#myskills').tagsinput('add',item);
-        }
-
+    var simplemde = new SimpleMDE({
+        element: $("#mytextarea")[0],
+        forceSync: true
     });
-    $("#addcategory").click(function (e) {
+    let skills = [
+            @foreach ($tags as $tag)
+        "{{ $tag->nom }}",
+        @endforeach
+    ];
+
+    let categories = [
+        @foreach($categories as $category)
+        "{{$category->name}}",
+        @endforeach
+    ];
+
+    $('#description').attr('required', false);
+    /*$('.CodeMirror textarea').attr('required', true);*/
+
+    $("#submit-button").click(function (e) {
         e.preventDefault();
-        if($("#categories").val() !==""){
-            var item = $("#categories").val();
-            $('#mycategories').tagsinput('add',item);
-        }
+        //console.log(simplemde.markdown(simplemde.value()));
+        $("#mytextareay").val(simplemde.markdown(simplemde.value()));
+        $("#post-job").submit();
+    });
+
+    $("#myskills").tagsInput({
+        'autocomplete': {
+            source: skills
+        },
+        placeholder:'Start typing to trigger the list of skills',
+        whitelist:skills
+    });
+    $("#mycategories").tagsInput({
+        placeholder: "Start typing to trigger the list categories",
+        autocomplete: {
+            source:categories
+        },
+        whitelist: categories
     });
 
     $("#type").on('change',function (e) {
@@ -74,4 +50,23 @@
             $("#duration").removeAttr("disabled");
         }
     });
+    @if(old("description"))
+        var description = "{!! old('description') !!}";
+        console.log(description);
+    simplemde.value("{!! old('description') !!}");
+        @endif
+    @if(old("categories"))
+        var sites = "{{old("categories")}}";
+        sites = sites.split(",");
+        for(let i =0;i<sites.length;i++){
+            $("#mycategories").addTag(sites[i]);
+        }
+        @endif
+        @if(old("skills"))
+    var site = "{{old("skills")}}";
+    site = site.split(",");
+    for(let i =0;i<site.length;i++){
+        $("#myskills").addTag(site[i]);
+    }
+    @endif
 </script>

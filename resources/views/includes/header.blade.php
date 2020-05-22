@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="{{asset('css/quill.bubble.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/quill.snow.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/simplemde.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/tags/bootstrap-tagsinput.css')}}">
+@yield('styles')
+    @notifyCss
     <!-- Custom Css -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}">
 
@@ -39,28 +40,7 @@
     <link rel="apple-touch-icon" href="{{asset('images/apple-touch-icon.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icon-72x72.png')}}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/icon-114x114.png')}}">
-    <style>
-        .bootstrap-tagsinput .tag {
-            font-weight: 400;
-            text-align: left;
-            font-family: "Roboto", sans-serif;
-            font-size: 1.4rem;
-            line-height: 1.85;
-            -webkit-box-direction: reverse;
-            box-sizing: border-box;
-            text-decoration: none;
-            background-color: transparent;
-            transition: all .3s ease;
-            display: inline-block;
-            color: inherit;
-            outline: none;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 3px 15px;
-            margin-right: 5px;
-            border-radius: 3px;
-            background-image: linear-gradient(to right, #f9fbfe, #ffffff);
-        }
-    </style>
+
 
     <!--[if lt IE 9]>
     <script src="{{asset('assets/js/html5shiv.min.js')}}"></script>
@@ -69,7 +49,6 @@
 
 </head>
 <body>
-
 @include('includes.navbar')
 @include('includes.banner-search')
 @include('includes.category')

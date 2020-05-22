@@ -16,7 +16,7 @@ class CreateJobsCandidatureTable extends Migration
         Schema::create('jobs_candidature', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_id')->constrained('jobs');
-            $table->foreignId('user_id')->constrained('users_details');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

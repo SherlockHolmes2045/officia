@@ -54,7 +54,7 @@ class SocialController extends Controller
             ]);
         }
 
-        return Session::get('url.intended') == null ? redirect()->to('/home'): redirect()->to(Session::get('url.intended'));
+        return Session::get('url.intended') == null ? redirect()->to('/'): redirect()->to(Session::get('url.intended'));
 
 
     }
@@ -89,7 +89,7 @@ class SocialController extends Controller
         event(new Registered($user));
         Session::forget('oauth');
         auth()->login($user);
-        return Session::get('url.intended') == null ? redirect()->to('/home'): redirect()->to(Session::get('url.intended'));
+        return Session::get('url.intended') == null ? redirect()->to('/'): redirect()->to(Session::get('url.intended'));
     }
 
     public function showform($provider){

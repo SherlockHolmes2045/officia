@@ -8,6 +8,7 @@
         </form>
         @endguest
     @auth
+        @if(isset($application))
     @if(count($application)!=0)
     <form action="{{route("job.unapply",['id'=>$job->id])}}" method="POST" id="apply-job">
         @csrf
@@ -17,6 +18,7 @@
             @csrf
         </form>
         @endif
+            @endif
     @endauth
     <!-- Candidates Details -->
     <div class="alice-bg padding-top-60 section-padding-bottom">
@@ -41,7 +43,6 @@
                             </div>
                             @guest
                             <div class="buttons">
-                                <a class="save" href="#" style="/*color: #ff8fa6;border-color: #ff8fa6;*/"><i data-feather="heart"></i>Save Job</a>
                                 <a class="apply" href="#"  onclick="event.preventDefault();
                                                      document.getElementById('apply-job').submit();">Apply</a>
                             </div>
@@ -50,7 +51,7 @@
                             @auth
                                 @if(auth()->user()->account_type == "candidate")
                                 <div class="buttons">
-                                    <a class="save" href="#" style="/*color: #ff8fa6;border-color: #ff8fa6;*/"><i data-feather="heart"></i>Save Job</a>
+                                    <a class="save" href="#" style="/*color: #ff8fa6;border-color: #ff8fa6;*/" id="save-job"><i data-feather="heart"></i>Save Job</a>
 
                                     @if(count($application)!=0)
                                         <a class="apply" href="#"  onclick="event.preventDefault();
@@ -287,5 +288,5 @@
 
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/share.js') }}"></script>
+   @include('scripts.job-details.save-job')
 @endsection

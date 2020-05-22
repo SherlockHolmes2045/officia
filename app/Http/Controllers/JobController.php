@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Applications;
 use App\Category;
 use App\EmployerDetails;
+use App\Favorite;
 use App\Job;
 use App\Tag;
 use Illuminate\Http\Request;
@@ -106,10 +107,38 @@ class JobController extends Controller
         $application = Applications::where([
             "user_id" => auth()->user()->id,
             "job_id" => $id
-        ]);
+        ])->first();
         $application->delete();
         notify()->success('Application deleted successfully.');
         return redirect()->back();
     }
+
+    public function favjob(Request $request,$id){
+
+        if($request->ajax()){
+
+            $favorite = Favorite::where([
+                'user_id' => auth()->user()->id,
+                'job_id' => $id
+                ])->first();
+
+            if($favorite != null){
+
+                $favorite->delete();
+
+                return response()->json(['message' => 'The job was successfully unsaved']);
+            }else{
+                $fav = new Favorite();
+                $fav->user_id = auth()->user()->id;
+                $fav->job_id = $id;
+
+                $fav->save();
+                return response()->json(['message' => 'The job was successfully saved']);
+            }
+        }
+
+    }
+
+
 
 }

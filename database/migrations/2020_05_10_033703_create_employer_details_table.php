@@ -17,7 +17,7 @@ class CreateEmployerDetailsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('location')->nullable();
-            $table->string('picture')->nullable();
+            $table->string('picture')->nullable()->default('images/account/default.jpg');
             $table->string('title')->nullable();
             $table->string('website')->nullable();
             $table->bigInteger('size')->nullable();

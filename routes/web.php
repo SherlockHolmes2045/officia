@@ -29,8 +29,12 @@ Route::post('/auth/finalise/','SocialController@finalise')->middleware('guest')-
 
 Route::get('/post-job','JobController@showform')->middleware(['auth','verified','employer'])->name('job.showform');
 Route::post('/post-job','JobController@savejob')->middleware(['auth','verified','employer'])->name('job.savejob');
-Route::get('/job/{id}','JobController@getjob')->name('job.details');
-Route::post('/job/{id}/apply','JobController@apply')->middleware(['auth','verified','candidate'])->name('job.apply');
-Route::post('/job/{id}/unapply','JobController@unapply')->middleware(['auth','verified','candidate'])->name('job.unapply');
-Route::post('/job/{id}/fav','JobController@favjob')->middleware(['auth','verified','candidate'])->name('job.fav');
-Route::post('/job/{id}/unfav','JobController@unfavejob')->middleware(['auth','verified','candidate'])->name('job.unfav');
+
+Route::prefix('/job')->group(function () {
+    Route::get('/','jobController@listjobs')->name('job.list');
+    Route::get('/{id}','JobController@getjob')->name('job.details');
+    Route::post('/{id}/apply','JobController@apply')->middleware(['auth','verified','candidate'])->name('job.apply');
+    Route::post('/{id}/unapply','JobController@unapply')->middleware(['auth','verified','candidate'])->name('job.unapply');
+    Route::post('/{id}/fav','JobController@favjob')->middleware(['auth','verified','candidate'])->name('job.fav');
+    Route::get('/{id}/download','JobController@download')->name('job.download');
+});

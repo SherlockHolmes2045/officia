@@ -1,4 +1,5 @@
 @extends('includes.header')
+
 @section('content')
 
 
@@ -34,7 +35,6 @@
                                 <div class="title-body">
                                     <h4>{{$job->title}}</h4>
                                     <div class="info">
-                                        {{Session::get('url.intended') == null ? "null":"else"}}
                                         <span class="company"><a href="#"><i data-feather="briefcase"></i>Theoreo</a></span>
                                         <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{$job->location}}</a></span>
                                         <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>{{$job->type}}</a></span>
@@ -51,8 +51,11 @@
                             @auth
                                 @if(auth()->user()->account_type == "candidate")
                                 <div class="buttons">
-                                    <a class="save" href="#" style="/*color: #ff8fa6;border-color: #ff8fa6;*/" id="save-job"><i data-feather="heart"></i>Save Job</a>
-
+                                    @if(count($fav)!=0)
+                                    <a class="save" href="#" style="color: #ff8fa6;border-color: #ff8fa6;" id="save-job"><i data-feather="heart"></i> Unsave Job</a>
+                                        @else
+                                        <a class="save" href="#" id="save-job"><i data-feather="heart"></i>Save Job</a>
+                                    @endif
                                     @if(count($application)!=0)
                                         <a class="apply" href="#"  onclick="event.preventDefault();
                                                      document.getElementById('apply-job').submit();">Unapply</a>

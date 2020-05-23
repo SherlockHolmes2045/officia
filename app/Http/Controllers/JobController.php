@@ -9,7 +9,9 @@ use App\Favorite;
 use App\Job;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class JobController extends Controller
 {
@@ -88,8 +90,13 @@ class JobController extends Controller
                "user_id" => auth()->user()->id,
                 "job_id" => $id
             ])->get();
+
+            $fav = Favorite::where([
+               'user_id' => auth()->user()->id,
+               'job_id' => $id
+            ])->get();
         }
-        return view('pages.job-detail',compact('notifications','job','linkedin','twitter','facebook','whatsapp','application'));
+        return view('pages.job-detail',compact('notifications','job','linkedin','twitter','facebook','whatsapp','application','fav'));
     }
 
     public function apply($id){
@@ -98,7 +105,7 @@ class JobController extends Controller
         $application->job_id = $id;
         $application->user_id = auth()->user()->id;
         $application->save();
-        notify()->success('Successfully Apply to this job.');
+        notify()->success('Successfully apply to this job.');
         return redirect()->back();
     }
 
@@ -126,19 +133,81 @@ class JobController extends Controller
 
                 $favorite->delete();
 
-                return response()->json(['message' => 'The job was successfully unsaved']);
+                return response()->json(['message' => 'The job was successfully unsaved.']);
             }else{
                 $fav = new Favorite();
                 $fav->user_id = auth()->user()->id;
                 $fav->job_id = $id;
 
                 $fav->save();
-                return response()->json(['message' => 'The job was successfully saved']);
+                return response()->json(['message' => 'The job was successfully saved.']);
             }
         }
 
     }
 
+    public function download($id){
 
+        if(auth()->check()){
+            $notifications = auth()->user()->notifications;
+        }
+
+        $job = Job::findorfail($id);
+
+        $categories = explode(",",$job->categories);
+        $skills = explode(",",$job->skills);
+        $job->categories = $categories;
+        $job->skills = $skills;
+
+        $linkedin = $job->getShareUrl("Check out this job on".env("APP_NAME"),"linkedin");
+        $twitter = $job->getShareUrl("Check out this job on".env("APP_NAME"),"twitter");
+        $facebook = $job->getShareUrl("Check out this job on".env("APP_NAME"),"facebook");
+        $whatsapp = $job->getShareUrl("Check out this job on".env("APP_NAME"),"whatsapp");
+
+        if(auth()->check() && auth()->user()->account_type=="candidate"){
+            $application = Applications::where([
+                "user_id" => auth()->user()->id,
+                "job_id" => $id
+            ])->get();
+
+            $fav = Favorite::where([
+                'user_id' => auth()->user()->id,
+                'job_id' => $id
+            ])->get();
+        }
+        $pdf = PDF::loadView('pages.job-detail', compact('notifications','job','linkedin','twitter','facebook','whatsapp','application','fav'));
+        return $pdf->download('invoice.pdf');
+    }
+
+    public function listjobs(){
+
+        if(auth()->check()){
+            $notifications = auth()->user()->notifications;
+        }
+        $categories = Category::all();
+        if(auth()->check() && auth()->user()->account_type == "candidate"){
+
+            $jobs = DB::table('jobs')
+                ->join('employer_details','jobs.user_id','=','employer_details.id')
+                ->join('users', 'users.id', '=', 'employer_details.user_id')
+                ->leftJoin('jobs_candidature',function($join){
+                    $join->on('jobs.id','jobs_candidature.job_id')
+                        ->where('jobs_candidature.user_id','=',auth()->user()->id)
+                        ->select('jobs.*','jobs_candidature.id as candidature_id');
+                })
+                ->select('jobs.*', 'users.name', 'employer_details.picture','jobs_candidature.id as candidature_id')
+                ->paginate(12);
+        }else{
+            $jobs = DB::table('jobs')
+                ->join('employer_details','jobs.user_id','=','employer_details.id')
+                ->join('users', 'users.id', '=', 'employer_details.user_id')
+                ->select('jobs.*', 'users.name', 'employer_details.picture')
+                ->paginate(12);
+        }
+
+       // dd($jobs);
+
+        return view('pages.job-list',compact('notifications','categories','jobs'));
+    }
 
 }

@@ -16,7 +16,7 @@ class CreateUsersDetailsTable extends Migration
         Schema::create('users_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('picture')->default('images/accout/default.jpg');
+            $table->string('picture')->default('images/account/default.jpg');
             $table->string('title')->nullable();
             $table->string('location')->nullable();
             $table->date('experience')->nullable();

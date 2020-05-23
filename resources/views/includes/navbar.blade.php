@@ -38,15 +38,28 @@
                         </div>
                             @endguest
                             @auth
-
+                                <div class="dropdown header-top-account">
+                                    <a href="#" class="account-button">My Account</a>
+                                    <div class="account-card">
+                                        <div class="header-top-account-info">
+                                            <a href="#" class="account-thumb">
+                                                <img src="{{auth()->user()->picture}}" class="img-fluid" alt="User profile">
+                                            </a>
+                                            <div class="account-body">
+                                                <h5><a href="#">{{auth()->user()->name}}</a></h5>
+                                                <span class="mail">{{auth()->user()->email}}</span>
+                                            </div>
+                                        </div>
+                                        <ul class="account-item-list">
+                                            <li><a href="#"><span class="ti-user"></span>Account</a></li>
+                                            <li><a href="#" onclick="event.preventDefault();
+                                                    document.getElementById('logout').submit();"><span class="ti-power-off"></span>Log Out</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <form action="{{route("logout")}}" method="POST" id="logout">
                                     @csrf
                                 </form>
-                                <select class="selectpicker select-language" id="user-options" data-width="fit">
-
-                                        <option data-content='{{auth()->user()->name}}' selected>{{auth()->user()->name}}</option>
-                                        <option  data-content='Logout'>Logout</option>
-                                </select>
                                 &nbsp;&nbsp;
                                 @endauth
                         <select class="selectpicker select-language" id="language" data-width="fit">
@@ -68,54 +81,15 @@
                         <ul class="navbar-nav">
                             <li class="menu-item active"><a title="Home" href="{{route('welcome')}}">Home</a></li>
                             <li class="menu-item"><a href="{{route('job.list')}}" title="Jobs">Jobs</a></li>
-                            <li class="menu-item dropdown">
-                                <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
-                                <ul  class="dropdown-menu">
-                                    <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                                    <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                                    <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item dropdown">
-                                <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employers</a>
-                                <ul  class="dropdown-menu">
-                                    <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
-                                    <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                                    <li class="menu-item"><a  href="employer-dashboard-post-job.html">Post a Job</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item dropdown">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
-                                <ul  class="dropdown-menu">
-                                    <li class="menu-item dropdown">
-                                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidate Dashboard</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                                            <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
-                                            <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
-                                            <li class="menu-item"><a  href="resume.html">Resume</a></li>
-                                            <li class="menu-item"><a  href="edit-resume.html">Edit Resume</a></li>
-                                            <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                                            <li class="menu-item"><a  href="dashboard-applied.html">Applied</a></li>
-                                            <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
-                                            <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
-                                            <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item dropdown">
-                                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="menu-item"><a href="employer-dashboard.html">Employer Dashboard</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-edit-profile.html">Edit Profile</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
-                                            <li class="menu-item"><a href="employer-dashboard-post-job.html">Post Job</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
+                            <li class="menu-item"><a title="Candidates" href="#">Candidates</a></li>
+                            <li class="menu-item"><a title="" href="#">Employers</a></li>
+                            @auth
+                                @if(auth()->user()->account_type == "candidate")
+                            <li class="menu-item"><a href="{{route('candidate.dashboard')}}">Dashboard</a></li>
+                                @else
+                                    <li class="menu-item"><a href="{{route('employer.dashboard')}}">Dashboard</a></li>
+                                @endif
+                            @endauth
                             <li class="menu-item"><a href="contact.html">Contact Us</a></li>
 
                             <li class="menu-item post-job"><a href="{{route('job.showform')}}"><i class="fas fa-plus"></i>Post a Job</a></li>

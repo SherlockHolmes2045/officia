@@ -31,10 +31,20 @@ Route::get('/post-job','JobController@showform')->middleware(['auth','verified',
 Route::post('/post-job','JobController@savejob')->middleware(['auth','verified','employer'])->name('job.savejob');
 
 Route::prefix('/job')->group(function () {
-    Route::get('/','jobController@listjobs')->name('job.list');
+    Route::get('/','JobController@listjobs')->name('job.list');
     Route::get('/{id}','JobController@getjob')->name('job.details');
     Route::post('/{id}/apply','JobController@apply')->middleware(['auth','verified','candidate'])->name('job.apply');
     Route::post('/{id}/unapply','JobController@unapply')->middleware(['auth','verified','candidate'])->name('job.unapply');
     Route::post('/{id}/fav','JobController@favjob')->middleware(['auth','verified','candidate'])->name('job.fav');
     Route::get('/{id}/download','JobController@download')->name('job.download');
+});
+
+Route::prefix('/candidate')->group(function(){
+   Route::get('/','CandidateController@listcandidates')->name('candidate.list');
+   Route::get('/dashboard','CandidateController@dashboard')->middleware(['auth','verified','candidate'])->name('candidate.dashboard');
+});
+
+Route::prefix('/employer')->group(function(){
+    Route::get('/','EmployerController@listcandidates')->name('employer.list');
+    Route::get('/dashboard','EmployerController@dashboard')->middleware(['auth','verified','employer'])->name('employer.dashboard');
 });

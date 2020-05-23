@@ -195,7 +195,13 @@ class JobController extends Controller
                         ->where('jobs_candidature.user_id','=',auth()->user()->id)
                         ->select('jobs.*','jobs_candidature.id as candidature_id');
                 })
-                ->select('jobs.*', 'users.name', 'employer_details.picture','jobs_candidature.id as candidature_id')
+                ->leftJoin('jobs_saved',function($join){
+
+                    $join->on('jobs.id','jobs_saved.job_id')
+                        ->where('jobs_saved.user_id','=',auth()->user()->id)
+                        ->select('jobs.*','jobs_saved.id as fav_id');
+                })
+                ->select('jobs.*', 'users.name', 'employer_details.picture','jobs_candidature.id as candidature_id','jobs_saved.id as fav_id')
                 ->paginate(12);
         }else{
             $jobs = DB::table('jobs')

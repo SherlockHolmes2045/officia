@@ -93,7 +93,7 @@
                                                 <div class="buttons">
                                                     <a href="#" class="button" onclick="event.preventDefault();
                                                      document.getElementById('apply-job-{{$job->id}}').submit();">{{$job->candidature_id == null ? "Apply Now":"Unapply"}}</a>
-                                                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                                                    <a href="{{route('job.fav',['id' => $job->id])}}" class="favourite" @if($job->fav_id !=null)style="color: #ff8fa6;border-color: #ff8fa6;"@endif><i data-feather="heart" style="colors:#ff8fa6;"></i></a>
                                                 </div>
                                                         @endif
                                                 @endauth
@@ -490,3 +490,7 @@
     </div>
     <!-- Job Listing End -->
 @endsection
+
+@section('scripts')
+    @include('scripts.job-list.fav')
+    @endsection

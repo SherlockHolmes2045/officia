@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobsViewsTable extends Migration
+class CreateUsersDetails2Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateJobsViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('jobs_views', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('job_id')->constrained('jobs');
-            $table->foreignId('user_id')->constrained('users');
-            $table->timestamps();
+        Schema::table('users_details', function (Blueprint $table) {
+            $table->string('skills')->nullable()->default(serialize([]));
+            $table->string('categories')->nullable()->default(serialize([]));
         });
     }
 
@@ -28,6 +26,6 @@ class CreateJobsViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jobs_views');
+        Schema::dropIfExists('users_details_2');
     }
 }

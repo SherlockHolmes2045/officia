@@ -7,6 +7,7 @@ use App\Category;
 use App\EmployerDetails;
 use App\Favorite;
 use App\Job;
+use App\JobViews;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +59,7 @@ class JobController extends Controller
         $employerdetails = EmployerDetails::where('user_id',auth()->user()->id)->first();
         $job->user_id = $employerdetails->id;
         if($request->file('extra')){
-            $path = $request->file('extra')->store('extras');
+            $path = $request->file('extra')->store('/extras','public');
             $job->cahier_charge = $path;
         }
         $job->save();
@@ -70,7 +71,20 @@ class JobController extends Controller
     public function getjob($id){
 
         if(auth()->check()){
+
             $notifications = auth()->user()->notifications;
+
+            $viewed = JobViews::where([
+                'user_id' => auth()->user()->id,
+                'job_id' => $id
+            ])->first();
+
+            if($viewed == null){
+                $viewed = new JobViews();
+                $viewed->user_id = auth()->user()->id;
+                $viewed->job_id = $id;
+                $viewed->save();
+            }
         }
 
         $job = Job::findorfail($id);
@@ -95,6 +109,11 @@ class JobController extends Controller
                'user_id' => auth()->user()->id,
                'job_id' => $id
             ])->get();
+
+            $viewed = JobViews::where([
+                'user_id' => auth()->user()->id,
+                'job_id' => $id
+            ]) ;
         }
         return view('pages.job-detail',compact('notifications','job','linkedin','twitter','facebook','whatsapp','application','fav'));
     }

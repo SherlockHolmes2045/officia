@@ -14,8 +14,7 @@ class UserDetails extends Model
      */
     protected $fillable = [
         'user_id','picture','title','location','experience','gender','job_type','about','special_skills','birthdate', 'special_skills',
-        'personnal_site','cover_letter','cv','contact', 'facebook','twitter','github','linkedin','dribble','instagram'
+        'personnal_site','cover_letter','cv','contact', 'facebook','twitter','github','linkedin','dribble','instagram','skills','categories'
     ];
-
 
 }

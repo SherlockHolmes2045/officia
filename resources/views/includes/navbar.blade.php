@@ -43,7 +43,7 @@
                                     <div class="account-card">
                                         <div class="header-top-account-info">
                                             <a href="#" class="account-thumb">
-                                                <img src="{{auth()->user()->picture}}" class="img-fluid" alt="User profile">
+                                                <img src="{{asset('storage/'.auth()->user()->picture)}}" class="img-fluid" alt="User profile">
                                             </a>
                                             <div class="account-body">
                                                 <h5><a href="#">{{auth()->user()->name}}</a></h5>

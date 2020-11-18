@@ -1,12 +1,12 @@
 <?php
 
+
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class ViewServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -25,12 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('includes.navbar', function ($view) {
-            if (Auth::check()) {
-                $view->with('notifications', auth()->user()->notifications);
-            } else {
-                $view->with('notifications', []);
-            }
-        });
+        // Using class based composers...
+        /*View::composer(
+            '*pages.welcome-content', 'App\Http\View\Composers\NotificationComposer'
+        );*/
+        /*View::composer('includes.navbar', function ($view) {
+            $view->with('notifications',[]);
+        });*/
     }
 }

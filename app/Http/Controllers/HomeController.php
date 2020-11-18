@@ -30,6 +30,7 @@ class HomeController extends Controller
             $notifications = auth()->user()->notifications;
         }
 
-        return view('pages.welcome-content',compact('categories','notifications'));
+        return view('pages.welcome-content',compact('categories'/*,'notifications'*/));
+        //return view('includes.navbar',compact('categories'/*,'notifications'*/));
     }
 }

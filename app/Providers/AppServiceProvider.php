@@ -25,12 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('includes.navbar', function ($view) {
-            if (Auth::check()) {
-                $view->with('notifications', auth()->user()->notifications);
-            } else {
-                $view->with('notifications', []);
-            }
-        });
+
     }
 }

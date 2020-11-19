@@ -25,12 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all()->take(10);
-        $notifications = null;
-        if(auth()->check()){
-            $notifications = auth()->user()->notifications;
-        }
 
-        return view('pages.welcome-content',compact('categories'/*,'notifications'*/));
-        //return view('includes.navbar',compact('categories'/*,'notifications'*/));
+        return view('pages.welcome-content',compact('categories'));
     }
 }

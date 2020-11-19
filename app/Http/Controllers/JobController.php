@@ -18,10 +18,9 @@ class JobController extends Controller
 {
     public function showform(){
 
-        $notifications = auth()->user()->notifications;
         $tags = Tag::all();
         $categories = Category::all();
-        return view('pages.post-job',compact('notifications','tags','categories'));
+        return view('pages.post-job',compact('tags','categories'));
 
     }
 
@@ -72,8 +71,6 @@ class JobController extends Controller
 
         if(auth()->check()){
 
-            $notifications = auth()->user()->notifications;
-
             $viewed = JobViews::where([
                 'user_id' => auth()->user()->id,
                 'job_id' => $id
@@ -115,7 +112,7 @@ class JobController extends Controller
                 'job_id' => $id
             ]) ;
         }
-        return view('pages.job-detail',compact('notifications','job','linkedin','twitter','facebook','whatsapp','application','fav'));
+        return view('pages.job-detail',compact('job','linkedin','twitter','facebook','whatsapp','application','fav'));
     }
 
     public function apply($id){
@@ -167,10 +164,6 @@ class JobController extends Controller
 
     public function download($id){
 
-        if(auth()->check()){
-            $notifications = auth()->user()->notifications;
-        }
-
         $job = Job::findorfail($id);
 
         $categories = explode(",",$job->categories);
@@ -194,15 +187,12 @@ class JobController extends Controller
                 'job_id' => $id
             ])->get();
         }
-        $pdf = PDF::loadView('pages.job-detail', compact('notifications','job','linkedin','twitter','facebook','whatsapp','application','fav'));
+        $pdf = PDF::loadView('pages.job-detail', compact('job','linkedin','twitter','facebook','whatsapp','application','fav'));
         return $pdf->download('invoice.pdf');
     }
 
     public function listjobs(){
 
-        if(auth()->check()){
-            $notifications = auth()->user()->notifications;
-        }
         $categories = Category::all();
         if(auth()->check() && auth()->user()->account_type == "candidate"){
 
@@ -232,7 +222,7 @@ class JobController extends Controller
 
        // dd($jobs);
 
-        return view('pages.job-list',compact('notifications','categories','jobs'));
+        return view('pages.job-list',compact('categories','jobs'));
     }
 
 }

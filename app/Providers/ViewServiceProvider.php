@@ -26,11 +26,8 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         // Using class based composers...
-        /*View::composer(
-            '*pages.welcome-content', 'App\Http\View\Composers\NotificationComposer'
-        );*/
-        /*View::composer('includes.navbar', function ($view) {
-            $view->with('notifications',[]);
-        });*/
+        View::composer(
+            ['includes.navbar','pages.candidate-dashboard'], 'App\Http\View\Composers\NotificationComposer'
+        );
     }
 }

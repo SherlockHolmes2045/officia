@@ -16,10 +16,10 @@ class NotificationComposer
      */
     public function compose(View $view)
     {
-        /*if(Auth::check()){
+        if(Auth::check()){
             $view->with('notifications', auth()->user()->notifications);
-        }else{*/
+        }else{
             $view->with('notifications',[]);
-       // }
+        }
     }
 }

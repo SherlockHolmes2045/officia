@@ -15,13 +15,11 @@ class CandidateController extends Controller
 
     public function dashboard(){
 
-        $notifications = auth()->user()->notifications;
-
         $details =  UserDetails::where('user_id',auth()->user()->id)->first();
         $percentage = round(100 - ($this->percentage($details)/17)*100,0);
         $fav = Favorite::where('user_id', auth()->user()->id)->get();
         $applications = Applications::where('user_id', auth()->user()->id)->get();
-        return view('pages.candidate-dashboard',compact('notifications','details','percentage','applications','fav'));
+        return view('pages.candidate-dashboard',compact('details','percentage','applications','fav'));
     }
 
     public function percentage($details){
@@ -62,8 +60,6 @@ class CandidateController extends Controller
 
     public function bookmark(){
 
-        $notifications = auth()->user()->notifications;
-
         $favs = DB::table('jobs_saved')
             ->join('jobs','jobs.id','=','jobs_saved.job_id')
             ->join('employer_details','employer_details.id','=','jobs.user_id')
@@ -73,13 +69,12 @@ class CandidateController extends Controller
             ->paginate(6);
         $details =  UserDetails::where('user_id',auth()->user()->id)->first();
         $percentage = round(100 - ($this->percentage($details)/17)*100,0);
-        return view('pages.dashboard-bookmark',compact('notifications','favs','details','percentage'));
+        return view('pages.dashboard-bookmark',compact('favs','details','percentage'));
 
     }
 
     public function applications(){
 
-        $notifications = auth()->user()->notifications;
         $details =  UserDetails::where('user_id',auth()->user()->id)->first();
         $percentage = round(100 - ($this->percentage($details)/17)*100,0);
         $applications = DB::table('jobs_candidature')
@@ -89,16 +84,15 @@ class CandidateController extends Controller
             ->where('jobs_candidature.user_id',auth()->user()->id)
             ->select('jobs.*','employer_details.picture','users.name')
             ->paginate(6);
-        return view('pages.dashboard-applications',compact('details','notifications','percentage','applications'));
+        return view('pages.dashboard-applications',compact('details','percentage','applications'));
     }
 
     public function editForm(){
 
-        $notifications = auth()->user()->notifications;
         $details =  UserDetails::where('user_id',auth()->user()->id)->first();
         $percentage = round(100 - ($this->percentage($details)/17)*100,0);
 
-        return view('pages.dashboard-profile',compact('details','notifications','percentage'));
+        return view('pages.dashboard-profile',compact('details','percentage'));
     }
 
     public function editProfile(Request $request) {
@@ -138,12 +132,13 @@ class CandidateController extends Controller
     }
 
     public function resume(){
-        $notifications = auth()->user()->notifications;
+
+
         $details =  UserDetails::where('user_id',auth()->user()->id)->first();
         $details->skills = unserialize($details->skills);
         $percentage = round(100 - ($this->percentage($details)/17)*100,0);
 
-        return view('pages.candidate-resume',compact('notifications','details','percentage'));
+        return view('pages.candidate-resume',compact('details','percentage'));
     }
 }
 

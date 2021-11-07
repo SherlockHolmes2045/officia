@@ -51,7 +51,7 @@
                                             </div>
                                         </div>
                                         <ul class="account-item-list">
-                                            <li><a href="#"><span class="ti-user"></span>Account</a></li>
+                                            <li><a href="#"><span class="ti-user"></span>Account</a></li>v
                                             <li><a href="#" onclick="event.preventDefault();
                                                     document.getElementById('logout').submit();"><span class="ti-power-off"></span>Log Out</a></li>
                                         </ul>

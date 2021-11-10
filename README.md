@@ -21,6 +21,67 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Installation
+
+Please check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/5.4/installation#installation)
+
+Alternative installation is possible without local dependencies relying on [Docker](#docker).
+
+Clone the repository
+
+    git clone https://github.com/SherlockHolmes2045/officia
+
+Switch to the repo folder
+
+    cd officia
+
+Install all the dependencies using composer
+
+    composer install
+
+Copy the example env file and make the required configuration changes in the .env file
+
+    cp .env.example .env
+
+Generate a new application key
+
+    php artisan key:generate
+
+Run the database migrations (**Set the database connection in .env before migrating**)
+
+    php artisan migrate --seed
+
+Start the local development server
+
+    php artisan serve
+
+You can now access the server at http://localhost:8000
+
+**TL;DR command list**
+
+    git clone git@github.com:gothinkster/laravel-realworld-example-app.git
+    cd laravel-realworld-example-app
+    composer install
+    cp .env.example .env
+    php artisan key:generate
+
+**Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
+
+    php artisan migrate --seed
+    php artisan serve
+
+**Also have to set credentials for email smtp server in .env file. You can see an example in .env.example file** [Environment variables](#environment-variables)
+  ```
+  MAIL_MAILER=
+  MAIL_HOST=
+  MAIL_PORT=
+  MAIL_USERNAME=
+  MAIL_PASSWORD=
+  MAIL_ENCRYPTION=
+  MAIL_FROM_ADDRESS=
+  MAIL_FROM_NAME=
+  ```
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
